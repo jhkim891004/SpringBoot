@@ -1,8 +1,14 @@
 # Local 세팅 가이드
 ### Local 작업 환경을 만들기 위한 가이드
-1. MySQL Server Community 버전 설치
+1. STS 설치
+- [다운로드링크](https://spring.io/tools)
+2. JDK 11 설치
+- 기존에 사용하는 11 버전이 있으면 그대로 사용
+- 없으면 해당 [링크](https://www.oracle.com/kr/java/technologies/javase/jdk11-archive-downloads.html) 접속하여 설치
+  - 하단 [Windows x64 Compressed Archive] 다운로드 하여 STS 전용으로 별도로 구축
+3. MySQL Server Community 버전 설치
 - [다운로드링크](https://dev.mysql.com/downloads/installer/)
-2. 데이터베이스 생성 및 유저 생성
+4. 데이터베이스 생성 및 유저 생성
 ```mysql
 use mysql;
 -- 사용자 생성
@@ -12,7 +18,7 @@ create database spring default character set utf8;
 -- 사용자 권한 부여
 grant all privileges on spring.* to cndfactory@locahost;
 ```
-3. 테이블 생성
+5. 테이블 생성
 ```mysql
 /* 게시글 테이블 */
 create table tb_board
@@ -81,7 +87,7 @@ create index TB_REPLY_BOARD_ID_index
 alter table tb_reply
     add primary key (ID);
 ```
-4. 데이터 생성
+6. 데이터 생성
 ```mysql
 insert into tb_menu 
 (ID, PARENT_ID, MENU_NAME, SEQ, USE_YN, REG_DATE, REG_ID, MOD_DATE, MOD_ID)

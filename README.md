@@ -1,9 +1,10 @@
 # Spring Boot Sampling
 Spring MVC 패턴 구조 파악 및 학습 용도
-#### 사용한 라이브러리
+### 사용한 라이브러리
 > 추후 필요한 라이브러리 추가 예정
 + Web Container
   + Spring boot 2.5
+  + JDK 11
 + WAS(Web Application Server)
   + Embedded Tomcat
 + Build
@@ -13,7 +14,7 @@ Spring MVC 패턴 구조 파악 및 학습 용도
   + DB Access: MyBatis
 + Validation
   + Spring Validation
-#### 디렉토리 구조(실제 실행 파일)
+### 디렉토리 구조(실제 실행 파일)
 <pre>
 └ domain
     ├ api
@@ -56,7 +57,7 @@ Spring MVC 패턴 구조 파악 및 학습 용도
     + DAO 역할을 하는 Mapper
 + config: 라이브러리의 설정에 필요한 객체
 + common: 두 레이아웃 이외의 스프링 컨테이너에 필요한 객체
-#### 디렉토리 구조(resources 파일)
+### 디렉토리 구조(resources 파일)
 <pre>
 ├ resources
 |   └ mybatis-mapper    
@@ -67,3 +68,27 @@ Spring MVC 패턴 구조 파악 및 학습 용도
   + mybatis-mapper: 각 Mapper 인터페이스와 매핑되는 실제 실행될 쿼리를 작성한 xml 파일
 + resources-local: 로컬 환경을 위한 JDBC 연결 정보 및 로그 설정 파일
 + resources-stg: 스테이징 환경을 위한 JDBC 연결 정보 및 로그 설정 파일
+### API 작성 규칙
+RESTFul API 작성을 위한 자체 컨벤션
+- [API, REST API, RESTful API 개념정리](https://velog.io/@taeha7b/api-restapi-restfulapi)
+- 목적에 맞는 메소드(get, post, put, fetch, delete) 사용
+```java
+@GetMapping     // 데이터를 조회하는 메소드
+@PostMapping    // 데이터를 저장하는 메소드
+@PutMapping     // 데이터의 모든 속성을 변경하는 메소드
+@FetchMapping   // 데이터의 일부 속성을 변경하는 메소드
+@DeleteMapping  // 데이터를 삭제하는 메소드
+```
+- 리소스는 최대한 간결하게 단수형으로 표현하고 prefix로 /api/v1 은 공통
+  - uri 에 버전정보를 넣는 이유는 해당 API 가 외부통신용 API 일 때 고도화 작업으로 서비스 로직이 변경되었을 시 기존 api는 유지하고 버전정보로 새로운 버전의 api를 사용하여 기존 api 사용자의 서비스 장애를 예방
+  - ```기존 사용자: /api/v1/sub/main, 이후 사용자: /api/v2/sub/main```
+- uri 의 depth 는 최대 2depth 로 작성(sub -> main)
+```java
+@GetMapping("/api/v1/sub/main/{id}")
+public SuccessResponse<ResMenuSearchDTO> getOneMenu(@PathVariable("id") String id) {
+    MenuVO menu = menuService.getOneMenu(id);
+    return new SuccessResponse<>(HttpStatus.OK, new ResMenuSearchDTO(menu));
+}
+```
+- 응답 json 데이터에 요청 API 의 목적과 상관없는 속성을 반환하지 않는다.
+  - 해당 API 사용 목적에 필요한 속성만 반환하여 사용자가 알기 쉬운 데이터셋을 만든다.
