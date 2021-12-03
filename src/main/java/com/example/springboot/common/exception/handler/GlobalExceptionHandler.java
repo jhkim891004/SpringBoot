@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.UnexpectedTypeException;
-import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -83,8 +82,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	private ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
 		log.error("MissingServletRequestParameterException", e);
-		final ErrorResponse response = ErrorResponse.of(ErrorCode.MISSING_REQUEST_PARAM);
-		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.MISSING_REQUEST_PARAM.getStatus()));
+		final ErrorResponse response = ErrorResponse.of(ErrorCode.MISSING_JSON_DATA);
+		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.MISSING_JSON_DATA.getStatus()));
 	}
 
 	/**
@@ -114,7 +113,7 @@ public class GlobalExceptionHandler {
 	private ResponseEntity<ErrorResponse> handleBusinessException(final BizException e) {
 		log.error("handleBusinessException", e);
 		final ErrorCode errorCode = e.getErrorCode();
-		final ErrorResponse response = ErrorResponse.of(errorCode);
+		final ErrorResponse response = ErrorResponse.of(errorCode, e.getMessage());
 		return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
 	}
 
@@ -122,7 +121,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	private ResponseEntity<ErrorResponse> handleException(Exception e) {
 		log.error("handleException", e);
-		final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
+		final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
