@@ -4,18 +4,14 @@ import com.example.springboot.api.mapper.menu.MenuMapper;
 import com.example.springboot.common.exception.BizException;
 import com.example.springboot.common.response.error.ErrorCode;
 import com.example.springboot.model.dto.menu.ReqMenuModifyDTO;
+import com.example.springboot.model.dto.menu.ResMenuSearchDTO;
 import com.example.springboot.model.vo.menu.MenuVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -27,8 +23,11 @@ public class MenuService {
 	 * 모든 메뉴를 가져온다.
 	 * @return
 	 */
-	public List<MenuVO> getAllMenu() {
-		return menuMapper.findAll();
+	public List<ResMenuSearchDTO> getAllMenu() {
+		/* stream 을 사용하여 response 에 사용되는 DTO 로 mapping 작업 */
+		return menuMapper.findAll().stream()
+				.map(ResMenuSearchDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -36,55 +35,47 @@ public class MenuService {
 	 * @param id 식별키
 	 * @return
 	 */
-	public MenuVO getOneMenu(Long id) {
-		return menuMapper.findOneById(id)
+	public ResMenuSearchDTO getOneMenu(Long id) {
+		MenuVO resultVO = menuMapper.findOneById(id)
 				.orElseThrow(() -> new NoSuchElementException("Not Found Menu."));
+		return new ResMenuSearchDTO(resultVO);
 	}
 
+	/**
+	 * 메뉴를 수정한다.
+	 * @param dto 수정할 메뉴 정보
+	 */
 	@Transactional
-	public MenuVO modifyMenu(ReqMenuModifyDTO dto) {
-		List<MenuVO> beforeVOList = new ArrayList<>();
-		List<MenuVO> afterVOList = menuMapper.findAllByParentId(dto.getAfterParentId());
+	public void modifyMenu(ReqMenuModifyDTO.ModifyList dto) {
+		menuMapper.removeAll();
 
-		if(dto.getBeforeParentId() != dto.getAfterParentId()) {
-			beforeVOList = menuMapper.findAllByParentId(dto.getBeforeParentId());
+		dto.getList().stream()
+				.map(ReqMenuModifyDTO::toVO)
+				.forEach(depth1 -> {
+					menuMapper.save(depth1);
+					MenuVO parentVo = menuMapper.findOneById(depth1.getId())
+							.orElseThrow(() -> new NoSuchElementException("Not Found Menu."));
 
-			menuMapper.removeByParentId(dto.getBeforeParentId());
-			AtomicInteger seq = new AtomicInteger(1);
-			beforeVOList.stream()
-					.filter(entity -> !entity.isExists(dto.getId()))
-					.forEach(entity -> {
-						MenuVO saveVO = MenuVO.builder()
-								.parentId(entity.getParentId())
-								.menuName(entity.getMenuName())
-								.seq(seq.get())
-								.useYn(entity.getUseYn())
-								.build();
-						menuMapper.save(saveVO);
-					});
+					depth1.getChildren(parentVo.getId()).stream()
+							.forEach(depth2 -> {
+								menuMapper.save(depth2);
 
-			menuMapper.removeByParentId(dto.getAfterParentId());
-			afterVOList.stream()
-					.filter(entity -> entity.getSeq() >= dto.getSeq())
-					.forEach(entity -> {
-						entity.incrementSeq();
-						menuMapper.save(entity);
-					});
-		}
+								depth2.getChildren(depth2.getId()).stream()
+										.forEach(depth3 -> {
+											menuMapper.save(depth3);
+										});
+							});
+				});
 
-		if(dto.getBeforeParentId() == dto.getAfterParentId()) {
-			afterVOList.add(dto.toVO());
-			menuMapper.removeByParentId(dto.getAfterParentId());
-			afterVOList.stream()
-					.filter(entity -> !entity.isExists(dto.getId()))
-					.sorted(Comparator.comparing(MenuVO::getSeq))
-					.forEach(entity -> {
-						entity.incrementSeq();
-						menuMapper.save(entity);
-					});
-		}
+		throw new BizException("Success.. Execute Rollback..", ErrorCode.BAD_REQUEST);
+	}
 
-		throw new BizException("TEST", ErrorCode.INTERNAL_SERVER_ERROR);
-//		return dto.toVO();
+	/**
+	 * 메뉴를 삭제한다.
+	 * @param id 식별키
+	 */
+	@Transactional
+	public void removeMenu(Long id) {
+		menuMapper.removeById(id);
 	}
 }

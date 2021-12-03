@@ -47,17 +47,39 @@
 		LEFT OUTER JOIN
 				TB_MENU S ON M.ID = S.PARENT_ID
 		WHERE   L.PARENT_ID IS NULL
+		AND		L.USE_YN = 'Y'
+		AND		(M.USE_YN = 'Y' OR M.USE_YN IS NULL)
+		AND		(S.USE_YN = 'Y' OR S.USE_YN IS NULL)
 		ORDER BY
-				L_SEQ ASC, M_SEQ ASC, S_SEQ ASC;
+				L_SEQ, M_SEQ, S_SEQ
 	</select>
 
-	<select id="findAllByParentId" parameterType="long" resultType="menuVO">
-		SELECT	*
+	<select id="findOneById" parameterType="long" resultType="menuVO">
+		SELECT	ID
+				, PARENT_ID
+				, MENU_NAME
+				, SEQ
+				, USE_YN
+				, REG_DATE
+				, REG_ID
+				, MOD_DATE
+				, MOD_ID
 		FROM	TB_MENU
-		WHERE	PARENT_ID = #{parentId}
+		WHERE	ID = #{id}
 		ORDER BY
-				SEQ ASC;
+				SEQ
 	</select>
+
+	<delete id="removeAll">
+		DELETE
+		FROM	TB_MENU
+	</delete>
+
+	<delete id="removeById" parameterType="long">
+		DELETE
+		FROM	TB_MENU
+		WHERE	ID = #{id}
+	</delete>
 
 	<delete id="removeByParentId" parameterType="long">
 		DELETE
@@ -65,7 +87,7 @@
 		WHERE	PARENT_ID = #{parentId}
 	</delete>
 
-	<insert id="save" parameterType="menuVO">
+	<insert id="save" parameterType="menuVO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO TB_MENU
 		(
 			PARENT_ID
@@ -83,9 +105,9 @@
 			, #{menuName}
 			, #{seq}
 			, #{useYn}
-			, SYSDATE()
+			, NOW()
 			, 'SYSTEM'
-			, SYSDATE()
+			, NOW()
 			, 'SYSTEM'
 		)
 	</insert>
@@ -109,9 +131,9 @@
 			, #{vo.menuName}
 			, #{seq}
 			, #{vo.useYn}
-			, SYSDATE()
+			, NOW()
 			, 'SYSTEM'
-			, SYSDATE()
+			, NOW()
 			, 'SYSTEM'
 		)
 		</foreach>

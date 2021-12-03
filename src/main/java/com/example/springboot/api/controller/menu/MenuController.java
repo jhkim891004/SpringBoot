@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,22 +19,24 @@ public class MenuController {
 	private final MenuService menuService;
 
 	@GetMapping("/api/v1/menu")
-	public SuccessResponse<List<ResMenuSearchDTO>> getAllMenu() {
-		return new SuccessResponse<>(HttpStatus.OK, menuService.getAllMenu().stream()
-				.map(ResMenuSearchDTO::new)
-				.collect(Collectors.toList()));
+	public SuccessResponse<List<ResMenuSearchDTO>> getAllMenu(@RequestBody MenuVO vo) {
+		return new SuccessResponse<>(HttpStatus.OK, menuService.getAllMenu());
 	}
 
 	@GetMapping("/api/v1/menu/{id}")
 	public SuccessResponse<ResMenuSearchDTO> getOneMenu(@PathVariable("id") Long id) {
-		MenuVO menu = menuService.getOneMenu(id);
-		return new SuccessResponse<>(HttpStatus.OK, new ResMenuSearchDTO(menu));
+		return new SuccessResponse<>(HttpStatus.OK, menuService.getOneMenu(id));
 	}
 
 	@PutMapping("/api/v1/menu")
-	public SuccessResponse<ResMenuModifyDTO> modifyMenu(@RequestBody @Valid ReqMenuModifyDTO dto) {
-		MenuVO menu = menuService.modifyMenu(dto);
-		return new SuccessResponse<>(HttpStatus.CREATED, new ResMenuModifyDTO(menu));
+	public SuccessResponse modifyMenu(@RequestBody @Valid ReqMenuModifyDTO.ModifyList dto) {
+		menuService.modifyMenu(dto);
+		return new SuccessResponse<>(HttpStatus.CREATED);
 	}
 
+	@DeleteMapping("/api/v1/menu/{id}")
+	public SuccessResponse removeMenu(@PathVariable("id") Long id) {
+		menuService.removeMenu(id);
+		return new SuccessResponse<>(HttpStatus.NO_CONTENT);
+	}
 }
