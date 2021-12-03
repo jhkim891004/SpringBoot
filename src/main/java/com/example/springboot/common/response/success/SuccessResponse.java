@@ -13,6 +13,12 @@ public class SuccessResponse<T> {
 	private String message;
 	private T payload;
 
+	public SuccessResponse(HttpStatus status) {
+		this.status = status.value();
+		this.message = status.getReasonPhrase();
+		this.payload = null;
+	}
+
 	public SuccessResponse(HttpStatus status, T payload) {
 		this.status = status.value();
 		this.message = status.getReasonPhrase();

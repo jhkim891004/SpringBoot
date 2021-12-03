@@ -14,14 +14,19 @@ public enum ErrorCode {
 	 * 500: 서버 오류
 	 */
 	// Common
-	INVALID_INPUT_VALUE(400, "E001", " Invalid Input Value"),
-	INVALID_TYPE_VALUE(400, "E002", " Invalid Type Value"),
-	METHOD_NOT_ALLOWED(405, "E003", " Invalid Method"),
-	ENTITY_NOT_FOUND(400, "E004", " Entity Not Found"),
-	INTERNAL_SERVER_ERROR(500, "E005", "Server Error"),
-	MISSING_REQUEST_PARAM(400, "E006", "Missing Request Param"),
-	INVALID_VALID_ANNOTATION(400, "E007", "Invalid Valid Annotation")
+	BAD_REQUEST(400, "E001", "Bad Request"),
 
+	INVALID_INPUT_VALUE(400, "E101", "Invalid Input Value"),
+	INVALID_TYPE_VALUE(400, "E102", "Invalid Type Value"),
+	METHOD_NOT_ALLOWED(405, "E103", "Invalid Method"),
+	INVALID_VALID_ANNOTATION(400, "E104", "Invalid Valid Annotation"),
+
+	ENTITY_NOT_FOUND(400, "E201", "Entity Not Found"),
+
+	MISSING_REQUEST_PARAM(400, "E301", "Missing Request Param"),
+	MISSING_JSON_DATA(400, "E302", "JSON Parsing Error"),
+
+	INTERNAL_SERVER_ERROR(500, "E999", "Server Error")
 	;
 
 	private final int status;

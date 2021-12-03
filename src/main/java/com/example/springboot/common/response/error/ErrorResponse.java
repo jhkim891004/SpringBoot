@@ -6,8 +6,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.validation.ConstraintViolation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -25,6 +27,13 @@ public class ErrorResponse {
 		this.payload = errors;
 	}
 
+	private ErrorResponse(final ErrorCode code, String message) {
+		this.status = code.getStatus();
+		this.code = code.getCode();
+		this.message = message;
+		this.payload = new ArrayList<>();
+	}
+
 	private ErrorResponse(final ErrorCode code) {
 		this.status = code.getStatus();
 		this.code = code.getCode();
@@ -34,6 +43,10 @@ public class ErrorResponse {
 
 	public static ErrorResponse of(final ErrorCode code, final BindingResult bindingResult) {
 		return new ErrorResponse(code, FieldError.of(bindingResult));
+	}
+
+	public static ErrorResponse of(final ErrorCode code, final String message) {
+		return new ErrorResponse(code, message);
 	}
 
 	public static ErrorResponse of(final ErrorCode code) {
