@@ -21,6 +21,7 @@
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
+			<charset>UTF-8</charset>
 			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
 			<charset>${CONSOLE_LOG_CHARSET}</charset>
 		</encoder>
