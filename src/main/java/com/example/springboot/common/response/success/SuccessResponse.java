@@ -19,9 +19,23 @@ public class SuccessResponse<T> {
 		this.payload = null;
 	}
 
+	public SuccessResponse(SuccessCode successCode) {
+		this.status = successCode.getStatus();
+		this.code = successCode.getCode();
+		this.message = successCode.getMessage();
+		this.payload = null;
+	}
+
 	public SuccessResponse(HttpStatus status, T payload) {
 		this.status = status.value();
 		this.message = status.getReasonPhrase();
+		this.payload = payload;
+	}
+
+	public SuccessResponse(SuccessCode successCode, T payload) {
+		this.status = successCode.getStatus();
+		this.code = successCode.getCode();
+		this.message = successCode.getMessage();
 		this.payload = payload;
 	}
 }
