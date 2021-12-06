@@ -33,20 +33,6 @@ public class MenuVO {
 		this.parentId = parentId;
 	}
 
-	/**
-	 * 메뉴 정보를 수정한다.
-	 * @param parentId
-	 * @param menuName
-	 * @param seq
-	 * @param useYn
-	 */
-	public void update(Long parentId, String menuName, int seq, String useYn) {
-		this.parentId = parentId;
-		this.menuName = menuName;
-		this.seq = seq;
-		this.useYn = useYn;
-	}
-
 	@Builder
 	public MenuVO(String menuName, int seq, String useYn, List<MenuVO> children) {
 		this.menuName = menuName;

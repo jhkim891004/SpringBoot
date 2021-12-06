@@ -4,7 +4,9 @@ import com.example.springboot.api.mapper.menu.MenuMapper;
 import com.example.springboot.common.exception.BizException;
 import com.example.springboot.common.response.error.ErrorCode;
 import com.example.springboot.model.dto.menu.ReqMenuModifyDTO;
+import com.example.springboot.model.dto.menu.ResMenuModifyListDTO;
 import com.example.springboot.model.dto.menu.ResMenuSearchDTO;
+import com.example.springboot.model.dto.menu.ResMenuSearchListDTO;
 import com.example.springboot.model.vo.menu.MenuVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,10 +25,10 @@ public class MenuService {
 	 * 모든 메뉴를 가져온다.
 	 * @return
 	 */
-	public List<ResMenuSearchDTO> getAllMenu() {
+	public List<ResMenuSearchListDTO> getAllMenu() {
 		/* stream 을 사용하여 response 에 사용되는 DTO 로 mapping 작업 */
 		return menuMapper.findAll().stream()
-				.map(ResMenuSearchDTO::new)
+				.map(ResMenuSearchListDTO::new)
 				.collect(Collectors.toList());
 	}
 
@@ -36,9 +38,9 @@ public class MenuService {
 	 * @return
 	 */
 	public ResMenuSearchDTO getOneMenu(Long id) {
-		MenuVO resultVO = menuMapper.findOneById(id)
+		MenuVO vo = menuMapper.findOneById(id)
 				.orElseThrow(() -> new NoSuchElementException("Not Found Menu."));
-		return new ResMenuSearchDTO(resultVO);
+		return new ResMenuSearchDTO(vo);
 	}
 
 	/**
@@ -46,7 +48,7 @@ public class MenuService {
 	 * @param dto 수정할 메뉴 정보
 	 */
 	@Transactional
-	public void modifyMenu(ReqMenuModifyDTO.ModifyList dto) {
+	public List<ResMenuModifyListDTO> modifyMenu(ReqMenuModifyDTO.ModifyList dto) {
 		menuMapper.removeAll();
 
 		dto.getList().stream()
@@ -67,7 +69,9 @@ public class MenuService {
 							});
 				});
 
-		throw new BizException("Success.. Execute Rollback..", ErrorCode.BAD_REQUEST);
+		return menuMapper.findAll().stream()
+				.map(ResMenuModifyListDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	/**

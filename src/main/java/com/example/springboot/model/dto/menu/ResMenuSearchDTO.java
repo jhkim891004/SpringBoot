@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Getter
@@ -14,15 +16,22 @@ public class ResMenuSearchDTO {
 	private Long id;
 	private Long parentId;
 	private String menuName;
-	private List<ResMenuSearchDTO> children;
+	private int seq;
+	private String regDate;
+	private String regId;
+	private String modDate;
+	private String modId;
 
-	@Builder
 	public ResMenuSearchDTO(MenuVO vo) {
+		SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+
 		this.id = vo.getId();
 		this.parentId = vo.getParentId();
 		this.menuName = vo.getMenuName();
-		this.children = vo.getChildren().stream()
-				.map(ResMenuSearchDTO::new)
-				.collect(Collectors.toList());
+		this.seq = vo.getSeq();
+		this.regDate = simpleFormat.format(vo.getRegDate());
+		this.regId = vo.getRegId();
+		this.modDate = simpleFormat.format(vo.getModDate());
+		this.modId = vo.getModId();
 	}
 }

@@ -5,11 +5,11 @@ import lombok.Getter;
 @Getter
 public enum SuccessCode {
 	// Common
-	OK(200, "S001", "Success."),
+	OK(200, "S001", "Success"),
 
-	CREATED(201, "S002", "Success Create."),
-	MODIFIED(201, "S003", "Success Modify."),
-	DELETED(201, "S004", "Success Delete.")
+	CREATED(201, "S002", "Success Create"),
+	MODIFIED(201, "S003", "Success Modify"),
+	DELETED(201, "S004", "Success Delete")
 
 	;
 

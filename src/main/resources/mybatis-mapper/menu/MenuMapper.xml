@@ -66,8 +66,6 @@
 				, MOD_ID
 		FROM	TB_MENU
 		WHERE	ID = #{id}
-		ORDER BY
-				SEQ
 	</select>
 
 	<delete id="removeAll">
