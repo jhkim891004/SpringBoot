@@ -19,6 +19,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		String contentType = request.getContentType();
 		JsonNode requestBody = null;
 		if (request.getContentType() != null && request.getContentType().contains("application/json")) {
 			if (request.getInputStream() != null) {
@@ -32,7 +33,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 						+ "Request Body: {}"
 				, request.getMethod()
 				, request.getRequestURI()
-				, request.getContentType() == null ? "-" : request.getContentType()
+				, contentType == null ? "-" : contentType
 				, requestBody == null ? "-" : objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestBody));
 
 		return true;
