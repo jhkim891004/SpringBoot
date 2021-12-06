@@ -22,6 +22,7 @@ public enum ErrorCode {
 	INVALID_VALID_ANNOTATION(400, "E104", "Invalid Valid Annotation"),
 
 	ENTITY_NOT_FOUND(400, "E201", "Entity Not Found"),
+	NOT_FOUND(404, "E202", "Not Found"),
 
 	MISSING_REQUEST_PARAM(400, "E301", "Missing Request Param"),
 	MISSING_JSON_DATA(400, "E302", "JSON Parsing Error"),

@@ -14,6 +14,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.UnexpectedTypeException;
 import java.util.NoSuchElementException;
@@ -52,6 +53,16 @@ public class GlobalExceptionHandler {
 		log.error("handleNoSuchElementException", e);
 		final ErrorResponse response = ErrorResponse.of(ErrorCode.ENTITY_NOT_FOUND);
 		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.ENTITY_NOT_FOUND.getStatus()));
+	}
+
+	/**
+	 * 요청한 URL이 없을 시 발생
+	 */
+	@ExceptionHandler(NoHandlerFoundException.class)
+	private ResponseEntity<ErrorResponse> handleNoSuchElementException(NoHandlerFoundException e) {
+		log.error("handleNoHandlerFoundException", e);
+		final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_FOUND);
+		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.NOT_FOUND.getStatus()));
 	}
 
 	/**
