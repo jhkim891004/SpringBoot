@@ -92,3 +92,5 @@ public SuccessResponse<ResMenuSearchDTO> getOneMenu(@PathVariable("id") String i
 ```
 - 응답 json 데이터에 요청 API 의 목적과 상관없는 속성을 반환하지 않는다.
   - 해당 API 사용 목적에 필요한 속성만 반환하는 DTO 를 별도로 만들어 사용한다.
+- 로컬 API 테스트용 Swagger URL
+  - [http://localhost:8081/swagger-ui/index.html](http://localhost:8081/swagger-ui/index.html)

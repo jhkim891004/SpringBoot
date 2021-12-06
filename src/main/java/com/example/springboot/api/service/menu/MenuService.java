@@ -80,6 +80,8 @@ public class MenuService {
 	 */
 	@Transactional
 	public void removeMenu(Long id) {
-		menuMapper.removeById(id);
+		MenuVO vo = menuMapper.findOneById(id)
+				.orElseThrow(() -> new NoSuchElementException("Not Found Menu."));
+		menuMapper.removeById(vo.getId());
 	}
 }
