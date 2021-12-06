@@ -2,7 +2,6 @@ package com.example.springboot.common.filter;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
@@ -15,9 +14,10 @@ import java.io.IOException;
 public class CustomServletWrappingFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
+		CustomHttpServletRequestWrapper wrappedRequest = new CustomHttpServletRequestWrapper(request);
 		ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
-		filterChain.doFilter(wrappingRequest, wrappingResponse);
+
+		filterChain.doFilter(wrappedRequest, wrappingResponse);
 		wrappingResponse.copyBodyToResponse();
 	}
 }
