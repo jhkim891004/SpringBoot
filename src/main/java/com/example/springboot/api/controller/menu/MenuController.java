@@ -3,7 +3,6 @@ package com.example.springboot.api.controller.menu;
 import com.example.springboot.api.service.menu.MenuService;
 import com.example.springboot.common.response.success.SuccessResponse;
 import com.example.springboot.model.dto.menu.ReqMenuModifyDTO;
-import com.example.springboot.model.dto.menu.ResMenuModifyDTO;
 import com.example.springboot.model.dto.menu.ResMenuSearchDTO;
 import com.example.springboot.model.vo.menu.MenuVO;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class MenuController {
 	private final MenuService menuService;
 
 	@GetMapping("/api/v1/menu")
-	public SuccessResponse<List<ResMenuSearchDTO>> getAllMenu(@RequestBody MenuVO vo) {
+	public SuccessResponse<List<ResMenuSearchDTO>> getAllMenu() {
 		return new SuccessResponse<>(HttpStatus.OK, menuService.getAllMenu());
 	}
 
