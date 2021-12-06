@@ -1,13 +1,14 @@
 # Local 세팅 가이드
 ### Local 작업 환경을 만들기 위한 가이드
 1. STS 설치
-- [다운로드링크](https://spring.io/tools)
+> 개발툴은 자신에게 잘 맞는 툴로 자유롭게 사용 
+- [STS 다운로드 링크](https://spring.io/tools)
 2. JDK 11 설치
 - 기존에 사용하는 11 버전이 있으면 그대로 사용
 - 없으면 해당 [링크](https://www.oracle.com/kr/java/technologies/javase/jdk11-archive-downloads.html) 접속하여 설치
   - 하단 [Windows x64 Compressed Archive] 다운로드 하여 STS 전용으로 별도로 구축
 3. MySQL Server Community 버전 설치
-- [다운로드링크](https://dev.mysql.com/downloads/installer/)
+- [다운로드 링크](https://dev.mysql.com/downloads/installer/)
 4. 데이터베이스 생성 및 유저 생성
 ```mysql
 use mysql;
@@ -92,14 +93,18 @@ alter table tb_reply
 insert into tb_menu 
 (ID, PARENT_ID, MENU_NAME, SEQ, USE_YN, REG_DATE, REG_ID, MOD_DATE, MOD_ID)
 values  
-(1, null, '프로그래밍(BackEnd)', 1, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(2, null, '프로그래밍(FrontEnd)', 2, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(3, null, '서버', 3, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(4, 1, 'nodejs', 1, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(5, 1, 'spring-mvc', 2, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(6, 1, 'spring-boot', 3, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(7, 1, 'Django', 4, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(8, 1, 'laravel', 5, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(9, 2, 'react', 1, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim'),
-(10, 2, 'angular', 2, 'Y', '2021-11-19 16:10:29', 'jhkim', '2021-11-19 16:10:36', 'jhkim');
+(1, null, '메뉴1', 1, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(2, null, '메뉴2', 2, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(3, null, '메뉴3', 3, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(4, 1, '메뉴1-1', 1, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(5, 1, '메뉴1-2', 2, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(6, 1, '메뉴1-3', 3, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(7, 1, '메뉴1-4', 4, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(8, 1, '메뉴1-5', 5, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(9, 2, '메뉴2-1', 1, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(10, 2, '메뉴2-2', 2, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(11, 3, '메뉴3-1', 1, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(12, 3, '메뉴3-2', 2, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(13, 3, '메뉴3-3', 3, 'Y', now(), 'jhkim', now(), 'jhkim'),
+(14, 3, '메뉴3-4', 4, 'Y', now(), 'jhkim', now(), 'jhkim');
 ```
