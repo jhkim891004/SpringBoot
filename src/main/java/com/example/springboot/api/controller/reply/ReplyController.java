@@ -2,7 +2,6 @@ package com.example.springboot.api.controller.reply;
 
 import com.example.springboot.api.service.reply.ReplyService;
 import io.swagger.annotations.Api;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
