@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
 	 * 요청한 URL이 없을 시 발생
 	 */
 	@ExceptionHandler(NoHandlerFoundException.class)
-	private ResponseEntity<ErrorResponse> handleNoSuchElementException(NoHandlerFoundException e) {
+	private ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException e) {
 		log.error("handleNoHandlerFoundException", e);
 		final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_FOUND);
 		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.NOT_FOUND.getStatus()));
