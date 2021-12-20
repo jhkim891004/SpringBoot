@@ -46,6 +46,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+// gradle 중복 전략 무시
+tasks.withType(Copy).all {
+	duplicatesStrategy = 'exclude'
+}
+
 test {
     useJUnitPlatform()
 }
