@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface BoardMapper {
-	List<BoardVO> findAll();
+	List<BoardVO> findAllByMenuId(Long menuId);
 }
