@@ -1,8 +1,6 @@
 package com.example.springboot.api.service.menu;
 
 import com.example.springboot.api.mapper.menu.MenuMapper;
-import com.example.springboot.common.exception.BizException;
-import com.example.springboot.common.response.error.ErrorCode;
 import com.example.springboot.model.dto.menu.ReqMenuModifyDTO;
 import com.example.springboot.model.dto.menu.ResMenuModifyListDTO;
 import com.example.springboot.model.dto.menu.ResMenuSearchDTO;
@@ -26,7 +24,31 @@ public class MenuService {
 	 * @return
 	 */
 	public List<ResMenuSearchListDTO> getAllMenu() {
-		/* stream 을 사용하여 response 에 사용되는 DTO 로 mapping 작업 */
+		/**
+		 * for in 문을 이용한 response 에 사용되는 DTO mapping 작업
+
+		 List<MenuVO> menuList = menuMapper.findAll();
+		 List<ResMenuSearchListDTO> responseList = new ArrayList<>();
+		 for(MenuVO vo : menuList) {
+		 	responseList.add(new ResMenuSearchListDTO(vo));
+		 }
+		 return responseList;
+
+		 */
+
+		/**
+		 * for 문을 이용한 response 에 사용되는 DTO mapping 작업
+
+		 List<MenuVO> menuList = menuMapper.findAll();
+		 List<ResMenuSearchListDTO> responseList = new ArrayList<>();
+		 for(int i=0; i<menuList.size(); i++) {
+		 	responseList.add(new ResMenuSearchListDTO(menuList.get(i)));
+		 }
+		 return responseList;
+
+		 */
+
+		/* stream 을 이용한 response 에 사용되는 DTO 로 mapping 작업 */
 		return menuMapper.findAll().stream()
 				.map(ResMenuSearchListDTO::new)
 				.collect(Collectors.toList());
@@ -38,8 +60,14 @@ public class MenuService {
 	 * @return
 	 */
 	public ResMenuSearchDTO getOneMenu(Long id) {
+		/**
+		 * Optional 객체를 이용한 null 체크
+		 * return 받는 객체를 Optional 객체로 parsing하게 되면 기본적인 null 체크 및 empty 객체 생성 가능
+		 * .orElseThrow: 조회해 온 객체가 null 일 경우 exception을 던진다.
+		 */
 		MenuVO vo = menuMapper.findOneById(id)
 				.orElseThrow(() -> new NoSuchElementException("Not Found Menu."));
+
 		return new ResMenuSearchDTO(vo);
 	}
 
@@ -80,6 +108,9 @@ public class MenuService {
 	 */
 	@Transactional
 	public void removeMenu(Long id) {
+		/**
+		 * 삭제할 데이터를 조회 후 조회한 데이터가 유효한 경우 삭제 처리한다.
+		 */
 		MenuVO vo = menuMapper.findOneById(id)
 				.orElseThrow(() -> new NoSuchElementException("Not Found Menu."));
 		menuMapper.removeById(vo.getId());
