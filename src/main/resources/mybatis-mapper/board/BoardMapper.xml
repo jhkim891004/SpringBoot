@@ -10,5 +10,15 @@
 		WHERE	MENU_ID = #{menuId}
 	</select>
 
+	<insert id="insertBoard" parameterType="long" resultType="boardVO">
+		insert INTO TB_BOARD
+		( 	ID
+		   ,TITLE
+		   ,CONTENT)
+		VALUES(#{id}
+			  ,#{title}
+			  ,#{content})
+	</insert>
+
 </mapper>
 
