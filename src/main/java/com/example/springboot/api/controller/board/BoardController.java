@@ -36,11 +36,18 @@ public class BoardController {
 		@PathVariable("id") Long id) {
 			return new SuccessResponse<>(SuccessCode.OK, boardService.getOneBoard(id));
 	}
-
 	
 	// TODO. 게시물 추가
+	@Operation(summary = "게시물 추가", description = "게시물을 추가한다.")
+	// @PostMapping("/api/v1/{menuId}/board")
 	
 	// TODO. 게시물 수정
+	@Operation(summary = "게시물 수정", description = "게시물을 수정한다.")
+	@ResponseStatus(HttpStatus.CREATED)
+	@PutMapping("/api/v1/board")
+	public SuccessResponse modifyBoard(@RequestBody @Valid ReqMenuModifyDTO.ModifyList dto) {
+		return new SuccessResponse<>(SuccessCode.MODIFIED, boardService.modifyBoard(dto));
+	}
 	
 	// TODO. 게시물 삭제
 	

@@ -27,4 +27,16 @@ public class BoardService {
 				.map(ResBoardSearchDTO::new)
 				.collect(Collectors.toList());
 	}
+	
+
+	/**
+	 * 게시물 목록을 조회한다.
+	 * @param menuId
+	 * @return
+	 */
+	public void removeBoard(Long menuId) {
+		
+	}
+
+
 }
